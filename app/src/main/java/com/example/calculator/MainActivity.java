@@ -1,11 +1,13 @@
 package com.example.calculator;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -20,9 +22,31 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        resultField = (TextView) findViewById(R.id.resultField);
-        numberField = (EditText) findViewById(R.id.numberField);
-        operationField = (TextView) findViewById(R.id.operationField);
+        resultField =  findViewById(R.id.resultField);
+        numberField =  findViewById(R.id.numberField);
+        operationField =  findViewById(R.id.operationField);
+
+        Button saveButton = findViewById(R.id.save);
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Main2Activity.class);
+                intent.putExtra(Main2Activity.SHARE_KEY,  operand.toString());
+                startActivityForResult(intent,1);
+
+            }
+        });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==1){
+            if (requestCode==RESULT_OK){
+                finish();
+            }
+
+        }
     }
 
     @Override
@@ -107,4 +131,5 @@ public class MainActivity extends AppCompatActivity {
         resultField.setText(operand.toString().replace('.', ','));
         numberField.setText("");
     }
+
 }
